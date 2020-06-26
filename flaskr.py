@@ -1,8 +1,8 @@
 import numpy
 from flask import Flask, redirect, url_for
 from views.placeholder import example_blueprint
+from Alexs_wedding_gift import app
 
-app = Flask(__name__)
 app.register_blueprint(example_blueprint)
 
 @app.route('/')
