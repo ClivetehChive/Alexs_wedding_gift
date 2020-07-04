@@ -1,7 +1,7 @@
 import numpy
 from flask import Flask, redirect, url_for
-from views.placeholder import example_blueprint
-from Alexs_wedding_gift import app
+from .views.placeholder import example_blueprint
+from . import app
 
 app.register_blueprint(example_blueprint)
 
