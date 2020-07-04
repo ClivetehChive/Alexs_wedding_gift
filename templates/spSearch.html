@@ -1,0 +1,9 @@
+{% extends "app_base.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+{% block content %}
+    <h1 class="text-center">Welcome to Spotify Controller</h1>
+    <div class="container">
+        {{ wtf.quick_form(form) }}
+    </div>
+{% endblock %}

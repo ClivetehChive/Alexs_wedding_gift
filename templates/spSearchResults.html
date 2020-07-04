@@ -1,0 +1,32 @@
+{% extends "app_base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center"><strong> Results for "{{search}}"</strong></h1>
+
+        {% for temp in artist_list %}
+            <div class="row">
+                {% for artist in temp %}
+                    <a href="{{url_for('spControl.artistPage', uri=artist.uri)}}">
+                        <div class="col-xs-{{divide}}">
+                            <div class="text-center">
+                                {% if artist.url_bool %}
+
+                                <img src={{artist.cover_url}} class="img-circle" width=100px height=100px>
+
+                                {% else %}
+                                <img src="https://cdn3.iconfinder.com/data/icons/social-media-circle-flat-1/1024/itunes-01-01-512.png" class="img-circle" width=100px height=100px>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <h6 class="text-center"><strong> {{artist.name}}</strong></h6>
+                            </div>
+                        </div>
+
+                    </a>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+</div>
+{% endblock %}
