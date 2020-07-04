@@ -1,7 +1,7 @@
 import numpy
 from Alexs_wedding_gift import app
 from flask import Flask, redirect, url_for
-import views.SpControl as spControl
+from .views import SpControl as spControl
 from flask_bootstrap import Bootstrap
 
 app.secret_key = "tempKey"
