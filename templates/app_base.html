@@ -19,6 +19,13 @@
     {%- endblock head %}
   </head>
   <body {% block body_attribs %} class="bg-4"{% endblock body_attribs %}>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <a class="navbar-brand" href={{url_for("home")}}>Home</a>
+            </div>
+        </div>
+    </nav>
     {% block body -%}
     {% block navbar %}
     {%- endblock navbar %}
