@@ -1,0 +1,67 @@
+{% extends "app_base.html" %}
+
+{% block content %}
+
+    <div>
+
+        <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
+
+            <div id="box" class="carousel-inner" role="listbox">
+                {% for image in image_list %}
+
+                    {% if image.id == 0 %}
+                        <div id={{image.id}} class="item active text-center" >
+                            <img class="home" src={{url_for('static', filename="images/"+image.path)}}>
+                        </div>
+
+                    {% else %}
+                        <div id={{image.id}} class="item text-center" >
+                            <img class="home" src={{url_for('static', filename="images/"+image.path)}}>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+            <div class="row container icon">
+                <div class="col-xs-4">
+                    <a href="{{url_for('messages')}}">
+                        <img src="https://png.pngtree.com/png-vector/20190801/ourlarge/pngtree-camera-icon-png-image_1638978.jpg" class="img-circle"width="50%">
+                    </a>
+                </div>
+                <div class="col-xs-4">
+
+                    <a href="{{url_for('spControl.search')}}">
+                        <img src="https://developer.spotify.com/assets/branding-guidelines/icon2@2x.png" class="img-circle" width="50%">
+                    </a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="{{url_for('messages')}}">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQklwjii2lQGQWOocTmTuSW2qOMO2rAmplENQ&usqp=CAU" class="img-circle"width="50%">
+                    </a>
+                </div>
+            </div>
+
+            {#<ol class="carousel-indicators">
+                {% for image in image_list %}
+                    {% if image.id == 0%}
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    {% else %}
+                        <li data-target="#myCarousel" data-slide-to={{image.id}}></li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+            #}
+        </div>
+    </div>
+    <br>
+    <div class="container bg-1">
+        <h3>This is the placeholder for current schedule</h3>
+    </div>
+    <br>
+    <div class="container bg-1">
+        <h3>This is the placeholder for the social feed carousel</h3>
+    </div>
+{% endblock %}
+
+
+

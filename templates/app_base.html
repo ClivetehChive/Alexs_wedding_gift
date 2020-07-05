@@ -5,19 +5,20 @@
   <head>
     {%- block head %}
     <title>{% block title %}{{title|default}}{% endblock title %}</title>
-
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     {%- block metas %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {%- endblock metas %}
 
     <!-- Bootstrap -->
     <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/custom.css')}}" rel="stylesheet" type="text/css">
     {%- block styles %}
 
     {%- endblock styles %}
     {%- endblock head %}
   </head>
-  <body{% block body_attribs %}{% endblock body_attribs %}>
+  <body {% block body_attribs %} class="bg-4"{% endblock body_attribs %}>
     {% block body -%}
     {% block navbar %}
     {%- endblock navbar %}
