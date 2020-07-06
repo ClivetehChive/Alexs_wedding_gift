@@ -7,7 +7,7 @@
         {% for temp in artist_list %}
             <div class="row">
                 {% for artist in temp %}
-                    <a href="{{url_for('spControl.artistPage', uri=artist.uri)}}">
+                    <a href="{{url_for('spControl.artistPage', uri=artist.uri)}}" class="band">
                         <div class="col-xs-{{divide}}">
                             <div class="text-center">
                                 {% if artist.url_bool %}

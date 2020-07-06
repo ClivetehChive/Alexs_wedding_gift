@@ -11,7 +11,8 @@ import spotipy.util as util
 
 spControl = Blueprint('spControl', __name__)
 
-token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir)
+#token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir)
+token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path="/var/www/flaskapps/simpleflask/.cache-thelemmon")
 sp = spotipy.Spotify(auth=token)
 
 class searchForm(FlaskForm):
@@ -64,9 +65,10 @@ def checkToken():
         sp.search("artist:Foals", type="artist")['artists']['items']
     except Exception as e:
         print(e)
-        token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir)
+        #token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir)
+        token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path="/var/www/flaskapps/simpleflask/.cache-thelemmon")
         if token:
-            sp.set_auth()
+            sp.set_auth(token)
 
 
 @spControl.route('/search')
@@ -124,6 +126,9 @@ def artistPage(uri):
 
 @spControl.route('/adding/<uri>', methods=['POST', 'GET'])
 def add_song(uri):
-    sp.add_to_queue(uri)
+    try:
+        sp.add_to_queue(uri)
+    except Exception as e:
+        print(e)
     return redirect(url_for('spControl.search'))
 
