@@ -11,7 +11,7 @@ import spotipy.util as util
 
 spControl = Blueprint('spControl', __name__)
 
-#token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir)
+#token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path= "C:\\Users\\alexv\\PycharmProjects\\collab\\Alexs_wedding_gift\\.cache-0aeyideqwdabigj4vho1q0dx6")
 token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path="/var/www/flaskapps/simpleflask/.cache-thelemmon")
 sp = spotipy.Spotify(auth=token)
 
@@ -65,8 +65,9 @@ def checkToken():
         sp.search("artist:Foals", type="artist")['artists']['items']
     except Exception as e:
         print(e)
-        #token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir)
-        token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path="/var/www/flaskapps/simpleflask/.cache-thelemmon")
+        token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir,
+                                           cache_path="C:\\Users\\alexv\\PycharmProjects\\collab\\Alexs_wedding_gift\\.cache-0aeyideqwdabigj4vho1q0dx6")
+        #token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path="/var/www/flaskapps/simpleflask/.cache-thelemmon")
         if token:
             sp.set_auth(token)
 
