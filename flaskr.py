@@ -1,5 +1,7 @@
 from Alexs_wedding_gift import app
 from flask import redirect, url_for, render_template
+from flask_login import login_required
+from .decorators import admin_required
 import os
 
 class Image():
@@ -12,17 +14,26 @@ def index():
     return redirect(url_for('auth.login'))
 
 @app.route('/home')
+@login_required
 def home():
     image_list = [Image(no, path) for no, path in enumerate(os.listdir(app.root_path+"/static/images/"))]
     return render_template("app_home.html", image_list=image_list)
 
-@app.route('/messages')
+@app.route('/messages', methods=['POST', 'GET'])
+@login_required
 def messages():
-    return "This is the message submition page"
+    return "This is a placeholder for a message submition page"
 
-@app.route('/schedule')
+@app.route('/schedule', methods=['POST', 'GET'])
+@login_required
 def schedule():
-    return "This is the schedule page"
+    return "This is a placeholder for a schedule page"
+
+@app.route('/root', methods=['POST', 'GET'])
+@login_required
+@admin_required
+def root():
+    return "This is a placeholder for a engineering panel"
 
 if __name__ == '__main__':
     app.run(host="192.168.0.177", debug=True)

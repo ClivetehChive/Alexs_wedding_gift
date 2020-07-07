@@ -1,8 +1,9 @@
-import numpy as np
-from flask import Flask, Blueprint, render_template, url_for, request, redirect, flash, session
+from flask import Blueprint, render_template, url_for, request, redirect, flash
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_wtf import FlaskForm
+from flask_login import login_required
+from Alexs_wedding_gift.decorators import remote_not_allowed
 
 from .spConfig import config
 import spotipy
@@ -11,7 +12,7 @@ import spotipy.util as util
 
 spControl = Blueprint('spControl', __name__)
 
-#token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path= "C:\\Users\\alexv\\PycharmProjects\\collab\\Alexs_wedding_gift\\.cache-0aeyideqwdabigj4vho1q0dx6")
+#token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir)
 token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path="/var/www/flaskapps/simpleflask/.cache-thelemmon")
 sp = spotipy.Spotify(auth=token)
 
@@ -65,30 +66,28 @@ def checkToken():
         sp.search("artist:Foals", type="artist")['artists']['items']
     except Exception as e:
         print(e)
-        token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir,
-                                           cache_path="C:\\Users\\alexv\\PycharmProjects\\collab\\Alexs_wedding_gift\\.cache-0aeyideqwdabigj4vho1q0dx6")
-        #token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path="/var/www/flaskapps/simpleflask/.cache-thelemmon")
+        #token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir)
+        token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path="/var/www/flaskapps/simpleflask/.cache-thelemmon")
         if token:
             sp.set_auth(token)
 
-
-@spControl.route('/search')
-def search():
-    form = searchForm()
-    return render_template('spSearch.html', form=form)
-
 @spControl.route('/search', methods=['POST', 'GET'])
-def search_post_get():
+@login_required
+@remote_not_allowed
+def search():
     form = searchForm()
     if request.method == 'POST':
         return redirect(url_for('spControl.artistSearch', search=form.artist.data))
     else:
-        return redirect(url_for('spControl.search'))
+        return render_template("spSearch.html", form=form)
 
 @spControl.route('/search=<search>', methods=['POST', 'GET'])
+@login_required
+@remote_not_allowed
 def artistSearch(search):
     artist_dict = sp.search("artist:"+search, type="artist")['artists']['items']
     if len(artist_dict) == 0:
+        flash("No results for %s could be found" %search)
         return redirect(url_for("spControl.search"))
     artist_list = []
     temp = []
@@ -102,6 +101,8 @@ def artistSearch(search):
     return render_template("spSearchResults.html", search=search, artist_list=artist_list, divide=int(12/len(artist_list[0])))
 
 @spControl.route('/search/<uri>', methods=['POST', 'GET'])
+@login_required
+@remote_not_allowed
 def artistPage(uri):
     temp = sp.artist(uri)
     artist = fetchDetails(0, temp, 'artist')
@@ -126,10 +127,14 @@ def artistPage(uri):
                            focus= artist, related=related)
 
 @spControl.route('/adding/<uri>', methods=['POST', 'GET'])
+@login_required
+@remote_not_allowed
 def add_song(uri):
     try:
         sp.add_to_queue(uri)
+        flash("Your selection has been succesfully added to the queue")
     except Exception as e:
         print(e)
+        flash("Your selection could not be added to the queue. Please check that the client is playing before trying again")
     return redirect(url_for('spControl.search'))
 
