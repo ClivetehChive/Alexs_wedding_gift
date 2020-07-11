@@ -39,7 +39,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
-        return '< %r>' %self.timestamp
+        return '<Post %r>' %self.timestamp
 
 @login.user_loader
 def load_uder(id):

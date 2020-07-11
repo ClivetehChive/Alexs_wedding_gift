@@ -32,9 +32,11 @@ login = LoginManager(app)
 from . import flaskr
 from .views import SpControl
 from .views import app_auth
+from .views import app_messages
 
 app.register_blueprint(SpControl.spControl)
 app.register_blueprint(app_auth.auth)
+app.register_blueprint(app_messages.app_message)
 
 login.login_view = "auth.login"
 

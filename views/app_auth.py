@@ -23,7 +23,6 @@ def login():
         if user is not None and user.check_password(form.password.data):
             login_user(user)
             next_page = request.args.get('next')
-            print(current_user.can("Remote"))
             if next_page == '/' or next_page is None:
 
                 next_page = url_for('index')

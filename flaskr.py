@@ -2,6 +2,8 @@ from Alexs_wedding_gift import app
 from flask import redirect, url_for, render_template
 from flask_login import login_required
 from .decorators import admin_required
+from .models import Post
+from sqlalchemy import desc
 import os
 
 class Image():
@@ -16,13 +18,9 @@ def index():
 @app.route('/home')
 @login_required
 def home():
+    posts = Post.query.order_by(desc(Post.timestamp)).limit(10).all()
     image_list = [Image(no, path) for no, path in enumerate(os.listdir(app.root_path+"/static/images/"))]
-    return render_template("app_home.html", image_list=image_list)
-
-@app.route('/messages', methods=['POST', 'GET'])
-@login_required
-def messages():
-    return "This is a placeholder for a message submition page"
+    return render_template("app_home.html", image_list=image_list, posts=posts)
 
 @app.route('/schedule', methods=['POST', 'GET'])
 @login_required

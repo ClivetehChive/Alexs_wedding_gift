@@ -24,7 +24,7 @@
             </div>
             <div class="row container icon">
                 <div class="col-xs-4">
-                    <a href="{{url_for('messages')}}">
+                    <a href="{{url_for('app_message.messages')}}">
                         <img src="https://png.pngtree.com/png-vector/20190801/ourlarge/pngtree-camera-icon-png-image_1638978.jpg" class="img-circle"width="50%">
                     </a>
                 </div>
@@ -35,7 +35,7 @@
                     </a>
                 </div>
                 <div class="col-xs-4">
-                    <a href="{{url_for('messages')}}">
+                    <a href="{{url_for('schedule')}}">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQklwjii2lQGQWOocTmTuSW2qOMO2rAmplENQ&usqp=CAU" class="img-circle"width="50%">
                     </a>
                 </div>
@@ -55,18 +55,65 @@
     </div>
     <br>
     <div class="container bg-1">
-        <h3>This is the placeholder for current schedule</h3>
-    </div>
-    <br>
-    <div class="container bg-1">
         <h3>This is the placeholder for the social feed carousel</h3>
     </div>
+    <br>
+    <div class="container bg-4">
+        <div id="postCarousel" class="carousel slide" data-ride="carousel">
+            <div class="container bg-1">
+                <div id="postBox" class="carousel-inner" role="listbox">
+                    {% for post in posts %}
+                        {% if loop.index == 1 %}
+                            <div id={{loop.index}} class="item active" >
+                                <h4><strong>{{post.user.username}}</strong></h4>
+                                <h6>{{post.timestamp.time().replace(second=0, microsecond=0)}}</h6>
+                                <hr>
+                                <p>{{post.message}}</p>
+                                {% if post.file_loc != "" %}
+                                        <img src="{{post.file_url}}", width="100%">
+                                {% endif %}
+                            </div>
+
+                        {% else %}
+                            <div id={{loop.index}} class="item" >
+                                <h4><strong>{{post.user.username}}</strong></h4>
+                                <h6>{{post.timestamp.time().replace(second=0, microsecond=0)}}</h6>
+                                <hr>
+                                <p>{{post.message}}</p>
+                                {% if post.file_loc != "" %}
+                                    <img src="{{post.file_url}}", width="100%">
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <br>
+                    <br>
+                    <ol class="carousel-indicators">
+                        {% for post in posts %}
+                            {% if loop.index == 1 %}
+                                <li data-target="#postCarousel" data-slide-to="0" class="active"></li>
+                            {% else %}
+                                <li data-target="#postCarousel" data-slide-to={{loop.index}}></li>
+                            {% endif %}
+                        {% endfor %}
+                     </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block scripts %}
+    <script src="{{url_for('static', filename='/js/bcSwipe/jquery.bcSwipe.js')}}"></script>
     <script>
-        $('.carousel').carousel({
-            interval: 10000
+        $(document).ready(function(){
+            $('#postCarousel').bcSwipe({ threshold: 80 });
+
+            $('.carousel').carousel({
+                interval: 10000
+            })
         })
     </script>
 {% endblock %}

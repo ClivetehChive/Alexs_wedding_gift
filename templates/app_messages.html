@@ -1,0 +1,31 @@
+{% extends "app_base.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+{% block content %}
+    <br>
+    <div class="container">
+        <h1 class="text-center">Please leave a message for Dom and Kim</h1>
+        {{ wtf.quick_form(form) }}
+    </div>
+    <br>
+    <div class="container">
+    {% for post in posts %}
+        <div class="container bg-1">
+            <div id={{loop.index}} class="container" >
+                <h4><strong>{{post.user.username}}</strong></h4>
+                <h6>{{post.timestamp.time().replace(second=0, microsecond=0)}}</h6>
+                <hr>
+                <p>{{post.message}}</p>
+                {% if post.file_loc != "" %}
+                <div class="container text-center">
+                    <img src="{{post.file_url}}", width="75%">
+                </div>
+                <br>
+                {% endif %}
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+    </div>
+
+{% endblock %}
