@@ -69,9 +69,11 @@
                                 <h6>{{post.timestamp.time().replace(second=0, microsecond=0)}}</h6>
                                 <hr>
                                 <p>{{post.message}}</p>
+                                <div class="container text-center">
                                 {% if post.file_loc != "" %}
-                                        <img src="{{post.file_url}}", width="100%">
+                                    <img class="toggleimg" src="{{post.file_url}}" width="100%">
                                 {% endif %}
+                                </div>
                             </div>
 
                         {% else %}
@@ -80,9 +82,11 @@
                                 <h6>{{post.timestamp.time().replace(second=0, microsecond=0)}}</h6>
                                 <hr>
                                 <p>{{post.message}}</p>
-                                {% if post.file_loc != "" %}
-                                    <img src="{{post.file_url}}", width="100%">
-                                {% endif %}
+                                <div class="text-center">
+                                    {% if post.file_loc != "" %}
+                                        <img class="toggleimg" src="{{post.file_url}}" width="100%">
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}

@@ -1,3 +1,7 @@
+.toggleimg[src=""]{
+    display:none;
+}
+
 .bg-1 {
     color: #000000;
     background-color: #E0BBE4;
