@@ -4,17 +4,17 @@ from wtforms.validators import DataRequired
 from flask_wtf import FlaskForm
 from flask_login import login_required
 from Alexs_wedding_gift.decorators import remote_not_allowed
+from Alexs_wedding_gift import app
 
-from .spConfig import config
 import spotipy
-import spotipy.util as util
+from spotipy.oauth2 import SpotifyOAuth
+
 
 
 spControl = Blueprint('spControl', __name__)
 
-#token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir)
-token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path="/var/www/flaskapps/simpleflask/.cache-thelemmon")
-sp = spotipy.Spotify(auth=token)
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(username=app.config["SP_USERNAME"], scope=app.config["SP_SCOPE"], client_id=app.config["SP_ID"],
+                                               client_secret=app.config["SP_SEC"], redirect_uri=app.config["SP_REDIRECT"], cache_path=app.config["SP_CACHE"]))
 
 class searchForm(FlaskForm):
     artist = StringField('Please enter an artist', validators=[DataRequired()])
@@ -60,6 +60,7 @@ def fetchDetails(id, object, type):
             temp.tracks.append(Track(track['name'], track['uri']))
     return temp
 
+"""
 @spControl.before_request
 def checkToken():
     try:
@@ -70,6 +71,7 @@ def checkToken():
         token = util.prompt_for_user_token(config.username, config.scope, config.clie_id, config.clie_sec, config.redir, cache_path="/var/www/flaskapps/simpleflask/.cache-thelemmon")
         if token:
             sp.set_auth(token)
+"""
 
 @spControl.route('/search', methods=['POST', 'GET'])
 @login_required
