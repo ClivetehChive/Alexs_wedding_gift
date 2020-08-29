@@ -15,8 +15,8 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
-from views.config import Config
-#from views.testConfig import TestConfig
+from .views.config import Config
+#from .views.testConfig import TestConfig
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
